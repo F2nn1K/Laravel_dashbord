@@ -1,0 +1,11 @@
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `cadastro`, `in_estatus`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin@vsamining.com.br', '2025-10-05 20:00:00', '$2y$12$kmVGVrTn1hfnkojmvAnb4.MR7rRTLS3e3Eh9yi89kffwZKJkjvNaO', 'admin', 'outro', 'ativo', NULL, '2025-10-05 20:00:00', '2025-10-05 20:00:00'),
+(2, 'Antonio Jose de Souza Ferreira', 'ajsouferre@gmail.com', NULL, '$2y$12$snqnj4eD1wElW6c4EtgxtOMi9JwGZV4c4IehGQi9SnMzTZMrqG4ya', 'admin', 'outro', 'ativo', NULL, NULL, NULL),
+(3, 'Elvis Machado', 'gamboamej@gmail.com', '2025-10-12 04:00:00', '$2y$12$kmVGVrTn1hfnkojmvAnb4.MR7rRTLS3e3Eh9yi89kffwZKJkjvNaO', 'admin', 'outro', 'ativo', NULL, '2025-10-12 04:00:00', '2025-10-12 04:00:00');
+
+INSERT INTO `empresas` (`id`, `nome`, `descricao`, `responsavel`, `email`, `telefone`, `in_estatus`, `user_id_add`, `user_id_upd`, `user_id_del`, `fe_add`, `fe_upd`, `fe_del`) VALUES (NULL, 'Marudi Mountain', 'empresa', 'Elvis Machado', 'gamboamej@gmail.com', '+5595991142063', 'ativo', '1', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO `produtos` (`id`, `codigo`, `nome`, `descricao`, `categoria_id`, `marca_id`, `estoque_minimo`, `custo`, `preco_venda_brl`, `preco_venda_usd`, `preco_venda_gold`, `preco_venda_euro`, `in_estatus`, `user_id_add`, `user_id_upd`, `user_id_del`, `fe_add`, `fe_upd`, `fe_del`) VALUES (NULL, '', 'LOAD/CARRADA', 'carga que um carro transporta ou pode transportar de uma só vez.', '1', '1', '99999', '0.00', '100.00', '20.00', '0.05', '15.00', 'ativo', '1', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
