@@ -8,9 +8,10 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libpq-dev \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql zip gd
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip gd
 
 # Instalar Node.js e npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -40,7 +41,8 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 EXPOSE 8080
 
 # Comando de inicialização
-CMD php artisan config:cache && \
+CMD php artisan migrate --force && \
+    php artisan config:cache && \
     php artisan route:cache && \
     php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
 
