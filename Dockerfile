@@ -8,8 +8,13 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql zip gd
+
+# Instalar Node.js e npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -22,6 +27,9 @@ COPY . .
 
 # Instalar dependências do Composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Instalar dependências do Node e compilar assets
+RUN npm install && npm run build
 
 # Criar diretórios necessários e ajustar permissões
 RUN mkdir -p storage/framework/{sessions,views,cache} \
