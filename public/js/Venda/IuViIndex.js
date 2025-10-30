@@ -5,13 +5,10 @@ $(document).ready(function () {
 
     $('#tblRelatorio').DataTable({
         responsive: false,
-        dom: "Bfrtip",
+        dom: "frtip",
         lengthChange: false,
         autoWidth: true,
         searching: true,
-        buttons: [
-            'copy', 'excel', 'pdf', 'print'
-        ],
         order: [[0, "desc"]],
         info: false,
         ajax: APP_URL + '/venda/all',

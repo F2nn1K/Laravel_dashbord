@@ -100,11 +100,11 @@
                             </a>
                         </li>
 
-                        <li class="menu-item">
+                        {{-- <li class="menu-item">
                             <a href="#" class="menu-link">
                                 <div data-i18n="Without menu">Entrada Carradas</div>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 
@@ -139,40 +139,9 @@
                     <ul class="menu-sub">
                         <li class="menu-item">
                             <a href="{{ route('relatorio') }}" class="menu-link">
-                                <div data-i18n="Without menu">Geral</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('relatorio.geral-cliente') }}" target="_blank"
-                                class="menu-link">
-                                <div data-i18n="Without menu">Clientes</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Without navbar">Asociados</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Container">Investidores</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a target="_blank" href="{{ route('relatorio.venda') }}"
-                                class="menu-link">
-                                <div data-i18n="Container">Venda Diaria</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a target="_blank"
-                                href="{{ route('relatorio.vendas-data', ['inicio' => '2025-01-01', 'fin' => '2025-12-31']) }}"
-                                class="menu-link">
                                 <div data-i18n="Container">Total de Vendas</div>
                             </a>
                         </li>
-
-
                     </ul>
                 </li>
 
@@ -192,13 +161,6 @@
                     </a>
                 </li>
 
-                <li class="menu-item">
-                    <a href="{{ route('funcionario') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-collection"></i>
-                        <div data-i18n="Basic">Funcionarios</div>
-                    </a>
-                </li>
-
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Configurações</span>
                 </li>
@@ -206,20 +168,6 @@
                     <a href="{{ route('configuracoes') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
                         <div data-i18n="Basic">Configurações</div>
-                    </a>
-                </li>
-                <!-- Misc -->
-                <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-support"></i>
-                        <div data-i18n="Support">Soporte</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-file"></i>
-                        <div data-i18n="Documentation">Documentation</div>
                     </a>
                 </li>
             </ul>
@@ -315,53 +263,11 @@
 
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="{{ route('relatorio.geral-cliente') }}" target="_blank"
-                                class="menu-link">
-                                <div data-i18n="Without menu">Geral Clientes</div>
+                            <a href="{{ route('relatorio') }}" class="menu-link">
+                                <div data-i18n="Container">Total de Vendas</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Without navbar">Asociados</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Container">Investidores</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a target="_blank" href="{{ route('relatorio.venda') }}"
-                                class="menu-link">
-                                <div data-i18n="Container">Venda Diaria</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a target="_blank"
-                                href="{{ route('relatorio.vendas-data', ['inicio' => '2025-10-01', 'fin' => '2025-10-05']) }}"
-                                class="menu-link">
-                                <div data-i18n="Container">Vendas x Data</div>
-                            </a>
-                        </li>
-
-
                     </ul>
-                </li>
-
-
-
-                <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-support"></i>
-                        <div data-i18n="Support">Soporte</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-file"></i>
-                        <div data-i18n="Documentation">Documentation</div>
-                    </a>
                 </li>
             </ul>
 

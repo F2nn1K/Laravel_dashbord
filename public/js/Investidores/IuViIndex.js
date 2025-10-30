@@ -3,11 +3,10 @@ const APP_URL = window.APP_URL || '';
 $(document).ready(function () {
     $('#tblRelatorio').DataTable({
         responsive: false,
-        dom: "Bfrtip",
+        dom: "frtip",
         lengthChange: false,
         autoWidth: false,
         searching: true,
-        buttons: [],
         order: [[1, "desc"]],
         info: false,
         ajax: APP_URL + '/investidor/all',

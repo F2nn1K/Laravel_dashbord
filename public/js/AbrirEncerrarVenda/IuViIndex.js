@@ -3,13 +3,10 @@ const APP_URL = window.APP_URL || '';
 $(document).ready(function () {
     $('#tblRelatorio').DataTable({
         responsive: false,
-        dom: "Bfrtip",
+        dom: "frtip",
         lengthChange: false,
         autoWidth: true,
         searching: true,
-        buttons: [
-            'copy', 'excel', 'pdf', 'print'
-        ],
         order: [[2, "desc"]],
         info: false,
         ajax: APP_URL + '/abrir-encerrar-venda/all',
@@ -52,8 +49,8 @@ $(document).ready(function () {
     $(document).off('click', '#btnEdt').on('click', '#btnEdt', updRow);
     $(document).off('click', '#btnDelete').on('click', '#btnDelete', delRow);
 
-    $('#frmAdd').on('submit', function (e) {
-        console.log($(this).serialize());
+    // Formulário de ABRIR CAIXA
+    $('#frmAbrirCaixa').on('submit', function (e) {
         e.preventDefault();
         $.ajax({
             url: APP_URL + '/abrir-encerrar-venda/add',
@@ -66,61 +63,69 @@ $(document).ready(function () {
             success: function (response) {
                 Swal.fire({
                     icon: "success",
+                    title: "Caixa Aberto!",
                     text: response.message,
                     timer: 3000,
                 }).then(function () {
-                    $("#modalAdd").modal("hide");
-                    $("#frmAdd")[0].reset();
+                    $("#modalAbrirCaixa").modal("hide");
+                    $("#frmAbrirCaixa")[0].reset();
                     $("#tblRelatorio").DataTable().ajax.reload();
                 });
             },
             error: function (xhr) {
                 Swal.fire({
                     icon: "error",
-                    text: xhr.responseJSON.message,
+                    title: "Erro ao Abrir Caixa",
+                    text: xhr.responseJSON.message || "Erro ao processar solicitação",
                     timer: 5000,
                 });
             },
         });
     });
 
-    $('#frmUpd').on('submit', function (e) {
+    // Formulário de FECHAR CAIXA
+    $('#frmFecharCaixa').on('submit', function (e) {
         e.preventDefault();
-        $.ajax({
-            url: $(this).attr("action"),
-            data: $(this).serialize(),
-            type: "post",
-            dataType: "json",
-            beforeSend: function () {
-                showLoading();
-            },
-            success: function (response) {
-                if (response.status != false) {
-                    Swal.fire({
-                        icon: "success",
-                        text: response.message,
-                        timer: 3000,
-                    }).then(function () {
-                        $("#modalUpd").modal("hide");
-                        $("#frmUpd")[0].reset();
-                        $("#tblRelatorio").DataTable().ajax.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        text: response.message,
-                        timer: 3000,
-                    });
-                }
-
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: "error",
-                    text: xhr.responseJSON.message,
-                    timer: 5000,
+        
+        Swal.fire({
+            title: "Tem certeza?",
+            text: "Deseja realmente fechar este caixa?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, fechar!",
+            cancelButtonText: "Cancelar",
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: APP_URL + '/abrir-encerrar-venda/upd/id/' + $('#periodo_id').val(),
+                    data: $('#frmFecharCaixa').serialize(),
+                    type: "post",
+                    dataType: "json",
+                    beforeSend: function () {
+                        showLoading();
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Caixa Fechado!",
+                            text: response.message || "Caixa fechado com sucesso",
+                            timer: 3000,
+                        }).then(function () {
+                            $("#modalFecharCaixa").modal("hide");
+                            $("#frmFecharCaixa")[0].reset();
+                            $("#tblRelatorio").DataTable().ajax.reload();
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Erro ao Fechar Caixa",
+                            text: xhr.responseJSON.message || "Erro ao processar solicitação",
+                            timer: 5000,
+                        });
+                    },
                 });
-            },
+            }
         });
     });
 

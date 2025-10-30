@@ -2,18 +2,14 @@
 @section('title', 'Venda')
 @section('css')
 <!-- DataTables -->
-<link href="{{ asset('template/libs/datatables/dataTables.bootstrap4.min.css') }}"
-    rel="stylesheet" type="text/css" />
-<link href="{{ asset('template/libs/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
+<link href="/template/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="/template/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
 <!-- Responsive datatable examples -->
-<link href="{{ asset('template/libs/datatables/responsive.bootstrap4.min.css') }}"
-    rel="stylesheet" type="text/css" />
+<link href="/template/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
 <!-- Sweet Alert 2 -->
-<link href="{{ asset('template/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet"
-    type="text/css">
+<link href="/template/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
 @endsection
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -132,7 +128,7 @@
                         <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
                             <button type="submit"
                                 class="btn btn-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><b><i
-                                        class=" bx bx-save me-1"></i>{{ __('messages.send') }}</b></button>
+                                        class=" bx bx-save me-1"></i>Salvar</b></button>
                         </div>
 
                     </div>
@@ -214,7 +210,7 @@
                         <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
                             <button type="submit"
                                 class="btn btn-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><b><i
-                                        class=" bx bx-save me-1"></i>{{ __('messages.send') }}</b></button>
+                                        class=" bx bx-save me-1"></i>Salvar</b></button>
                         </div>
 
                     </div>
@@ -230,58 +226,43 @@
 @endsection
 @section('js')
 <!-- Core JS -->
-<!-- build:js assets/vendor/js/core.js -->
-<script src="{{ asset('template/assets/vendor/libs/jquery/jquery.js') }}"></script>
-<script src="{{ asset('template/assets/vendor/libs/popper/popper.js') }}"></script>
-<script src="{{ asset('template/assets/vendor/js/bootstrap.js') }}"></script>
-<script
-    src="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}">
-</script>
-
-<script src="{{ asset('template/assets/vendor/js/menu.js') }}"></script>
-<!-- endbuild -->
-
-<!-- Vendors JS -->
+<script src="/template/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/template/assets/vendor/libs/popper/popper.js"></script>
+<script src="/template/assets/vendor/js/bootstrap.js"></script>
+<script src="/template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/template/assets/vendor/js/menu.js"></script>
 
 <!-- Main JS -->
-<script src="{{ asset('template/assets/js/main.js') }}"></script>
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="/template/assets/js/main.js"></script>
 
 <!-- Required datatable js -->
-<script src="{{ asset( 'template/libs/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script src="/template/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/template/libs/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Buttons examples -->
-<script src="{{ asset( 'template/libs/datatables/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/jszip.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/pdfmake.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/vfs_fonts.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/buttons.html5.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/buttons.print.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/buttons.colVis.min.js') }}"></script>
+<script src="/template/libs/datatables/dataTables.buttons.min.js"></script>
+<script src="/template/libs/datatables/buttons.bootstrap4.min.js"></script>
+<script src="/template/libs/datatables/jszip.min.js"></script>
+<script src="/template/libs/datatables/pdfmake.min.js"></script>
+<script src="/template/libs/datatables/vfs_fonts.js"></script>
+<script src="/template/libs/datatables/buttons.html5.min.js"></script>
+<script src="/template/libs/datatables/buttons.print.min.js"></script>
+<script src="/template/libs/datatables/buttons.colVis.min.js"></script>
 
 <!-- Responsive examples -->
-<script src="{{ asset( 'template/libs/datatables/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset( 'template/libs/datatables/responsive.bootstrap4.min.js') }}"></script>
+<script src="/template/libs/datatables/dataTables.responsive.min.js"></script>
+<script src="/template/libs/datatables/responsive.bootstrap4.min.js"></script>
 
 <!-- Sweet Alert 2  -->
-<script src="{{ asset('template/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="/template/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
 <script>
-    window.APP_URL = "{{ url('/') }}";
-
+    window.APP_URL = "http://localhost:8001";
 </script>
 
 <!-- Personalized Js -->
-<script src="{{ asset('js/generalFunctions.js') }}"></script>
-<script src="{{ asset('js/Venda/IuViIndex.js') }}"></script>
+<script src="/js/generalFunctions.js"></script>
+<script src="/js/Venda/IuViIndex.js"></script>
 
-<link href="{{ asset('template/assets/css/personalized_sweetalert.css') }}" rel="stylesheet"
-    type="text/css" />
-
-<!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
+<link href="/template/assets/css/personalized_sweetalert.css" rel="stylesheet" type="text/css" />
 @endsection
