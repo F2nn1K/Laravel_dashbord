@@ -19,48 +19,141 @@ class ComunController extends Controller
 {
     public function dashboard()
     {
-        $vendas          = Venda::orderBy('fe_add', 'desc')->take(10)->get();
+        // Vendas de hoje
+        $vendas          = Venda::whereDate('fe_add', today())->orderBy('fe_add', 'desc')->get();
         $mo_total_usd    = $vendas->where('tp_pagamento', 'usd')->sum('mo_total');
         $mo_total_gold   = $vendas->where('tp_pagamento', 'gold')->sum('mo_total');
+        $mo_total_brl    = $vendas->where('tp_pagamento', 'brl')->sum('mo_total');
+        $mo_total_euro   = $vendas->where('tp_pagamento', 'euro')->sum('mo_total');
         
-        // Buscar cotação do Dólar (cache de 30 minutos)
-        $cotacao_dolar = Cache::remember('cotacao_dolar', 1800, function () {
+        // Calcular faturamento total (convertendo tudo para BRL estimado)
+        $faturamento_total = $mo_total_brl + ($mo_total_usd * 5.35) + ($mo_total_gold * 21000) + ($mo_total_euro * 5.80);
+        
+        // Dados para gráficos - últimos 7 dias
+        $vendas_7_dias = Venda::where('fe_add', '>=', now()->subDays(6)->startOfDay())
+            ->selectRaw('DATE(fe_add) as data, COUNT(*) as total, SUM(ca_produto) as carradas')
+            ->groupBy('data')
+            ->orderBy('data')
+            ->get();
+        
+        // Preparar dados para o gráfico de tendência
+        $grafico_dias = [];
+        $grafico_vendas = [];
+        $grafico_carradas = [];
+        
+        for ($i = 6; $i >= 0; $i--) {
+            $data = now()->subDays($i)->format('Y-m-d');
+            $dia = now()->subDays($i)->format('d/m');
+            $venda_dia = $vendas_7_dias->firstWhere('data', $data);
+            
+            $grafico_dias[] = $dia;
+            $grafico_vendas[] = $venda_dia ? $venda_dia->total : 0;
+            $grafico_carradas[] = $venda_dia ? $venda_dia->carradas : 0;
+        }
+        
+        // Vendas por forma de pagamento (para gráfico de pizza)
+        $vendas_por_pagamento = [
+            'usd' => $vendas->where('tp_pagamento', 'usd')->count(),
+            'gold' => $vendas->where('tp_pagamento', 'gold')->count(),
+            'brl' => $vendas->where('tp_pagamento', 'brl')->count(),
+            'euro' => $vendas->where('tp_pagamento', 'euro')->count(),
+        ];
+        
+        // Buscar cotação do Dólar (API AwesomeAPI - mais confiável)
+        $cotacao_dolar = Cache::remember('cotacao_dolar_awesome', 1800, function () {
             try {
+                // AwesomeAPI tem dados em tempo real, incluindo fins de semana
                 $response = Http::timeout(5)->get('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+                
                 if ($response->successful()) {
                     $data = $response->json();
-                    return [
-                        'valor' => number_format((float)$data['USDBRL']['bid'], 2, ',', '.'),
-                        'variacao' => (float)$data['USDBRL']['pctChange'],
-                        'atualizacao' => date('H:i', strtotime($data['USDBRL']['create_date']))
-                    ];
+                    if (isset($data['USDBRL'])) {
+                        $usd = $data['USDBRL'];
+                        return [
+                            'valor' => number_format((float)$usd['bid'], 4, ',', '.'),
+                            'variacao' => (float)$usd['pctChange'],
+                            'atualizacao' => date('H:i', strtotime($usd['create_date']))
+                        ];
+                    }
                 }
             } catch (\Exception $e) {
-                // Em caso de erro, retorna valores padrão
+                \Log::error('Erro ao buscar cotação do dólar: ' . $e->getMessage());
             }
+            
+            // Fallback: tentar API do BCB
+            try {
+                $hoje = date('m-d-Y');
+                $url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='{$hoje}'&\$top=1&\$format=json";
+                $response = Http::withoutVerifying()->timeout(10)->get($url);
+                
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (isset($data['value'][0])) {
+                        $valorAtual = (float)$data['value'][0]['cotacaoVenda'];
+                        return [
+                            'valor' => number_format($valorAtual, 4, ',', '.'),
+                            'variacao' => 0,
+                            'atualizacao' => date('H:i')
+                        ];
+                    }
+                }
+            } catch (\Exception $e) {
+                \Log::error('Erro fallback BCB dólar: ' . $e->getMessage());
+            }
+            
             return ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
         });
 
-        // Buscar cotação do Ouro (cache de 30 minutos)
-        $cotacao_ouro = Cache::remember('cotacao_ouro', 1800, function () {
+        // Buscar cotação do Ouro (API AwesomeAPI - mais confiável)
+        $cotacao_ouro = Cache::remember('cotacao_ouro_awesome', 1800, function () {
             try {
+                // AwesomeAPI - Ouro em onça troy (XAU)
                 $response = Http::timeout(5)->get('https://economia.awesomeapi.com.br/json/last/XAU-BRL');
+                
                 if ($response->successful()) {
                     $data = $response->json();
-                    return [
-                        'valor' => number_format((float)$data['XAUBRL']['bid'], 2, ',', '.'),
-                        'variacao' => (float)$data['XAUBRL']['pctChange'],
-                        'atualizacao' => date('H:i', strtotime($data['XAUBRL']['create_date']))
-                    ];
+                    if (isset($data['XAUBRL'])) {
+                        $xau = $data['XAUBRL'];
+                        return [
+                            'valor' => number_format((float)$xau['bid'], 2, ',', '.'),
+                            'variacao' => (float)$xau['pctChange'],
+                            'atualizacao' => date('H:i', strtotime($xau['create_date']))
+                        ];
+                    }
                 }
             } catch (\Exception $e) {
-                // Em caso de erro, retorna valores padrão
+                \Log::error('Erro ao buscar cotação do ouro: ' . $e->getMessage());
             }
+            
+            // Fallback: tentar API do BCB
+            try {
+                $url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda='XAU'&@dataInicial='" . date('m-d-Y', strtotime('-7 days')) . "'&@dataFinalCotacao='" . date('m-d-Y') . "'&\$top=1&\$format=json";
+                $response = Http::withoutVerifying()->timeout(10)->get($url);
+                
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (isset($data['value'][0])) {
+                        $valorAtual = (float)$data['value'][0]['cotacaoVenda'];
+                        return [
+                            'valor' => number_format($valorAtual, 2, ',', '.'),
+                            'variacao' => 0,
+                            'atualizacao' => date('H:i')
+                        ];
+                    }
+                }
+            } catch (\Exception $e) {
+                \Log::error('Erro fallback BCB ouro: ' . $e->getMessage());
+            }
+            
             return ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
         });
         
         $pageTitle = 'Dashboard';
-        return view('dashboard.index', compact('mo_total_gold','mo_total_usd','vendas','pageTitle','cotacao_dolar','cotacao_ouro'));
+        return view('dashboard.index', compact(
+            'mo_total_gold','mo_total_usd','mo_total_brl','mo_total_euro',
+            'vendas','pageTitle','cotacao_dolar','cotacao_ouro','faturamento_total',
+            'grafico_dias','grafico_vendas','grafico_carradas','vendas_por_pagamento'
+        ));
     }
     public function profile()
     {
