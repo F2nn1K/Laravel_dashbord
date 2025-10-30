@@ -253,7 +253,7 @@
 <script src="/template/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
 <script>
-    window.APP_URL = "http://localhost:8001";
+    window.APP_URL = "{{ config('app.url') }}" || window.location.origin;
 </script>
 
 <!-- Bloquear letras nos campos de telefone -->

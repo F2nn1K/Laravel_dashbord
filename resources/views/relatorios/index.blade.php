@@ -78,7 +78,7 @@
 <script src="/template/assets/js/main.js"></script>
 
 <script>
-    window.APP_URL = "http://localhost:8001";
+    window.APP_URL = "{{ config('app.url') }}" || window.location.origin;
 </script>
 
 <script>
