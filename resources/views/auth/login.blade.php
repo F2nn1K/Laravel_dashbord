@@ -304,7 +304,7 @@
 
     <!-- Core JS -->
     <script>
-        window.APP_URL = "http://localhost:8001";
+        window.APP_URL = "{{ config('app.url') }}" || window.location.origin;
     </script>
     
     <script src="/sneat-1.0.0/assets/vendor/libs/jquery/jquery.js"></script>
