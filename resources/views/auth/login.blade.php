@@ -253,7 +253,7 @@
                     </div>
                     <h2>Marudi Mountain</h2>
                     <div class="divider"></div>
-                    <p>Sistema de Gestão de Vendas de Ouro</p>
+                    <p>Sistema de Gestão</p>
                 </div>
 
                 <!-- Lado Direito - Formulário -->
