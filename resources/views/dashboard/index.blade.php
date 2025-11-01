@@ -14,54 +14,10 @@
             </div>
         </div>
 
-        <!-- Cards de Cotações + Métricas -->
+        <!-- Cards de Métricas -->
         <div class="row">
-            <!-- Card: Cotação Dólar -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <span class="avatar-initial rounded bg-label-success">
-                                    <i class="bx bx-dollar text-success"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <span class="fw-semibold d-block mb-1">Cotação Dólar</span>
-                        <h3 class="card-title mb-2">R$ {{ $cotacao_dolar['valor'] }}</h3>
-                        <small class="{{ $cotacao_dolar['variacao'] >= 0 ? 'text-success' : 'text-danger' }} fw-semibold">
-                            <i class="bx bx-{{ $cotacao_dolar['variacao'] >= 0 ? 'up' : 'down' }}-arrow-alt"></i>
-                            {{ number_format(abs($cotacao_dolar['variacao']), 2, ',', '.') }}%
-                        </small>
-                        <small class="text-muted d-block mt-1">Atualizado: {{ $cotacao_dolar['atualizacao'] }}</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Cotação Ouro -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <span class="avatar-initial rounded bg-label-warning">
-                                    <i class="bx bxs-diamond text-warning"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <span class="fw-semibold d-block mb-1">Cotação Ouro (1 oz)</span>
-                        <h3 class="card-title text-nowrap mb-1">R$ {{ $cotacao_ouro['valor'] }}</h3>
-                        <small class="{{ $cotacao_ouro['variacao'] >= 0 ? 'text-success' : 'text-danger' }} fw-semibold">
-                            <i class="bx bx-{{ $cotacao_ouro['variacao'] >= 0 ? 'up' : 'down' }}-arrow-alt"></i>
-                            {{ number_format(abs($cotacao_ouro['variacao']), 2, ',', '.') }}%
-                        </small>
-                        <small class="text-muted d-block mt-1">Atualizado: {{ $cotacao_ouro['atualizacao'] }}</small>
-                    </div>
-                </div>
-            </div>
-
             <!-- Card: Faturamento Total Hoje -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
@@ -72,7 +28,7 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Faturamento Hoje</span>
-                        <h3 class="card-title mb-2">R$ {{ number_format($faturamento_total, 2, ',', '.') }}</h3>
+                        <h3 class="card-title mb-2">$ {{ number_format($faturamento_total, 2, ',', '.') }}</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i> {{ $vendas->count() }} vendas
                         </small>
@@ -81,7 +37,7 @@
             </div>
 
             <!-- Card: Carradas Vendidas -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
@@ -133,7 +89,7 @@
                             </div>
                             <div>
                                 <span class="d-block mb-1">Vendas em Ouro</span>
-                                <h3 class="card-title text-nowrap mb-0">{{ number_format($mo_total_gold, 2, ',', '.') }} oz</h3>
+                                <h3 class="card-title text-nowrap mb-0">{{ number_format($mo_total_gold, 2, ',', '.') }} Dwt</h3>
                             </div>
                         </div>
                         <small class="text-muted">Pagamentos em GOLD</small>
@@ -235,7 +191,7 @@
                                             </td>
                                             <td class="text-end">
                                                 <strong class="{{ $venda->tp_pagamento == 'usd' ? 'text-success' : 'text-warning' }}">
-                                                    {{ $venda->tp_pagamento == 'usd' ? '$' : '' }}{{ number_format($venda->mo_total, 2, ',', '.') }}{{ $venda->tp_pagamento == 'gold' ? ' oz' : '' }}
+                                                    {{ $venda->tp_pagamento == 'usd' ? '$' : '' }}{{ number_format($venda->mo_total, 2, ',', '.') }}{{ $venda->tp_pagamento == 'gold' ? ' Dwt' : '' }}
                                                 </strong>
                                             </td>
                                             <td>

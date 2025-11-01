@@ -222,4 +222,156 @@ class RelatorioController extends Controller
     return $pdf->stream("relatorio-geral-cliente_{$dataHoraAtual}.pdf");
 }
 
+    // Modelo de Gestão - Página de Filtros
+    public function modeloGestao()
+    {
+        $pageTitle = 'Modelo de Gestão';
+        return view('relatorios.modelo-gestao', compact('pageTitle'));
+    }
+
+    // Modelo de Gestão - Gerar PDF
+    public function gerarModeloGestao(Request $request)
+    {
+        $dados = [];
+        
+        // Filtrar por nome se fornecido
+        $nomeFiltro = $request->input('nome_filtro');
+        
+        // Associados
+        if ($request->has('tipo_associados')) {
+            $query = \App\Models\Asociado::where('in_estatus', 'ativo');
+            if ($nomeFiltro) {
+                $query->where('nome', 'LIKE', "%{$nomeFiltro}%");
+            }
+            $associados = $query->get();
+            
+            foreach ($associados as $item) {
+                $dados[] = [
+                    'inscricao' => $item->id,
+                    'rampa' => $item->rampa,
+                    'nome' => $item->nome,
+                ];
+            }
+        }
+        
+        // Investidores
+        if ($request->has('tipo_investidores')) {
+            $query = \App\Models\Investidor::where('in_estatus', 'ativo');
+            if ($nomeFiltro) {
+                $query->where('nome', 'LIKE', "%{$nomeFiltro}%");
+            }
+            $investidores = $query->get();
+            
+            foreach ($investidores as $item) {
+                $dados[] = [
+                    'inscricao' => $item->id,
+                    'rampa' => $item->rampa,
+                    'nome' => $item->nome,
+                ];
+            }
+        }
+        
+        // Outros
+        if ($request->has('tipo_outros')) {
+            $query = \App\Models\Outro::where('in_estatus', 'ativo');
+            if ($nomeFiltro) {
+                $query->where('nome', 'LIKE', "%{$nomeFiltro}%");
+            }
+            $outros = $query->get();
+            
+            foreach ($outros as $item) {
+                $dados[] = [
+                    'inscricao' => $item->id,
+                    'rampa' => $item->rampa,
+                    'nome' => $item->nome,
+                ];
+            }
+        }
+        
+        $pdf = Pdf::loadView('relatorios.modelo-gestao-pdf', [
+            'titulo' => 'RELATÓRIO GERAL',
+            'dados' => $dados,
+            'data_hoje' => Carbon::now()->format('d \d\e F \d\e Y'),
+        ]);
+        
+        $dataHoraAtual = now()->format('Y-m-d_H-i-s');
+        return $pdf->stream("modelo_gestao_{$dataHoraAtual}.pdf");
+    }
+
+    // Modelo de Gestão 2 (com Assinatura) - Página de Filtros
+    public function modeloGestao2()
+    {
+        $pageTitle = 'Modelo de Gestão 2';
+        return view('relatorios.modelo-gestao-2', compact('pageTitle'));
+    }
+
+    // Modelo de Gestão 2 - Gerar PDF
+    public function gerarModeloGestao2(Request $request)
+    {
+        $dados = [];
+        
+        // Filtrar por nome se fornecido
+        $nomeFiltro = $request->input('nome_filtro');
+        
+        // Associados
+        if ($request->has('tipo_associados')) {
+            $query = \App\Models\Asociado::where('in_estatus', 'ativo');
+            if ($nomeFiltro) {
+                $query->where('nome', 'LIKE', "%{$nomeFiltro}%");
+            }
+            $associados = $query->get();
+            
+            foreach ($associados as $item) {
+                $dados[] = [
+                    'inscricao' => $item->id,
+                    'rampa' => $item->rampa,
+                    'nome' => $item->nome,
+                ];
+            }
+        }
+        
+        // Investidores
+        if ($request->has('tipo_investidores')) {
+            $query = \App\Models\Investidor::where('in_estatus', 'ativo');
+            if ($nomeFiltro) {
+                $query->where('nome', 'LIKE', "%{$nomeFiltro}%");
+            }
+            $investidores = $query->get();
+            
+            foreach ($investidores as $item) {
+                $dados[] = [
+                    'inscricao' => $item->id,
+                    'rampa' => $item->rampa,
+                    'nome' => $item->nome,
+                ];
+            }
+        }
+        
+        // Outros
+        if ($request->has('tipo_outros')) {
+            $query = \App\Models\Outro::where('in_estatus', 'ativo');
+            if ($nomeFiltro) {
+                $query->where('nome', 'LIKE', "%{$nomeFiltro}%");
+            }
+            $outros = $query->get();
+            
+            foreach ($outros as $item) {
+                $dados[] = [
+                    'inscricao' => $item->id,
+                    'rampa' => $item->rampa,
+                    'nome' => $item->nome,
+                ];
+            }
+        }
+        
+        $pdf = Pdf::loadView('relatorios.modelo-gestao-2-pdf', [
+            'titulo' => 'RELATÓRIO GERAL',
+            'dados' => $dados,
+            'data_hoje' => Carbon::now()->format('d \d\e F \d\e Y'),
+        ]);
+        
+        $dataHoraAtual = now()->format('Y-m-d_H-i-s');
+        return $pdf->stream("modelo_gestao_2_{$dataHoraAtual}.pdf");
+    }
+
 }

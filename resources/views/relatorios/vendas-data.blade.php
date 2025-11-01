@@ -10,6 +10,14 @@
         th { background-color: #eee; font-weight: bold; }
         .total { font-weight: bold; background-color: #eee; }
         .assinatura { margin-top: 50px; }
+        
+        /* Larguras específicas das colunas */
+        .col-data { width: 8%; }
+        .col-rampa { width: 6%; }
+        .col-nome { width: 44%; text-align: left; padding-left: 10px; }
+        .col-quant { width: 10%; }
+        .col-dolar { width: 12%; }
+        .col-gold { width: 12%; }
     </style>
 </head>
 <body>
@@ -27,31 +35,31 @@ AGREMENT</strong></p>
 <table>
     <thead>
         <tr>
-            <th>Data</th>
-            <th>Rampa</th>
-            <th>Nome</th>
-            <th>Quant Load</th>
-            <th>Dólar</th>
-            <th>Gold</th>
+            <th class="col-data">Data</th>
+            <th class="col-rampa">Rampa</th>
+            <th class="col-nome">Nome</th>
+            <th class="col-quant">Quant Load</th>
+            <th class="col-dolar">Dólar</th>
+            <th class="col-gold">Gold</th>
         </tr>
     </thead>
     <tbody>
         @foreach($vendas as $venda)
         <tr>
-            <td>{{ $venda['data'] }}</td>
-            <td>{{ $venda['rampa'] }}</td>
-            <td>{{ $venda['nome'] }}</td>
-            <td>{{ $venda['quant_load'] }}</td>
-            <td>{{ $venda['pgto_dolar'] }}</td>
-            <td>{{ $venda['pgto_gold'] }}</td>
+            <td class="col-data">{{ $venda['data'] }}</td>
+            <td class="col-rampa">{{ $venda['rampa'] }}</td>
+            <td class="col-nome">{{ $venda['nome'] }}</td>
+            <td class="col-quant">{{ $venda['quant_load'] }}</td>
+            <td class="col-dolar">{{ $venda['pgto_dolar'] }}</td>
+            <td class="col-gold">{{ $venda['pgto_gold'] }}</td>
         </tr>
         @endforeach
 
         <tr class="total">
             <td colspan="3">Total</td>
-            <td>{{ $totais['quant_load'] }}</td>
-            <td>{{ $totais['pgto_dolar'] }}</td>
-            <td>{{ $totais['pgto_gold'] }}</td>
+            <td class="col-quant">{{ $totais['quant_load'] }}</td>
+            <td class="col-dolar">{{ $totais['pgto_dolar'] }}</td>
+            <td class="col-gold">{{ $totais['pgto_gold'] }}</td>
         </tr>
     </tbody>
 </table>

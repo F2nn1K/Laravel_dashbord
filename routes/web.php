@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\admin\InvestidorController;
 use App\Http\Controllers\admin\AsociadoController;
 use App\Http\Controllers\admin\OutroController;
@@ -14,22 +15,42 @@ use App\Http\Controllers\admin\VendaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComunController;
 
-Route::get('/login', function () {return view('auth.login');})->name('login');
+// Redirecionar todas as rotas raiz para /login
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    }
+    return redirect('/login');
+});
+
+Route::get('/login', function () {
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    }
+    return view('auth.login');
+})->name('login');
+
 Route::get('/cadastro', function () {return view('auth.register');})->name('cadastro');
 
 Route::post('/logon', [AuthController::class, 'logon'])->name('logon');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/', function () {return redirect('/login');});
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'prevent.back'])->group(function () {
 
-
-
-Route::post('/logout', function () {
-    Auth::logout();
+// Logout - aceitar tanto GET quanto POST
+Route::match(['get', 'post'], '/logout', function () {
+    // Limpar completamente a sessão
+    Auth::guard('web')->logout();
+    
     request()->session()->invalidate();
     request()->session()->regenerateToken();
-    return redirect('/login');
+    request()->session()->flush();
+    
+    // Redirecionar com headers para prevenir cache
+    return redirect('/login')
+        ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', 'Sat, 01 Jan 1990 00:00:00 GMT');
 })->name('logout');
 
 Route::get('/profile', [ComunController::class, 'profile'])->name('profile');
@@ -150,6 +171,14 @@ Route::get('/vendas/{inicio}/{fin}', [RelatorioController::class, 'vendasData'])
 
 Route::get('/venda', [RelatorioController::class, 'gerarRelatorioVenda'])->name('relatorio.venda');
 Route::get('/cliente', [RelatorioController::class, 'relatorioGeralCliente'])->name('relatorio.geral-cliente');
+
+// Modelo de Gestão
+Route::get('/modelo-gestao', [RelatorioController::class, 'modeloGestao'])->name('relatorio.modelo-gestao');
+Route::get('/modelo-gestao/gerar', [RelatorioController::class, 'gerarModeloGestao'])->name('relatorio.modelo-gestao.gerar');
+
+// Modelo de Gestão 2 (com Assinatura)
+Route::get('/modelo-gestao-2', [RelatorioController::class, 'modeloGestao2'])->name('relatorio.modelo-gestao-2');
+Route::get('/modelo-gestao-2/gerar', [RelatorioController::class, 'gerarModeloGestao2'])->name('relatorio.modelo-gestao-2.gerar');
 
 });
 

@@ -142,6 +142,16 @@
                                 <div data-i18n="Container">Total de Vendas</div>
                             </a>
                         </li>
+                        <li class="menu-item">
+                            <a href="{{ route('relatorio.modelo-gestao') }}" class="menu-link">
+                                <div data-i18n="Container">Modelo de Gestão</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('relatorio.modelo-gestao-2') }}" class="menu-link">
+                                <div data-i18n="Container">Modelo de Gestão 2</div>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -265,6 +275,16 @@
                         <li class="menu-item">
                             <a href="{{ route('relatorio') }}" class="menu-link">
                                 <div data-i18n="Container">Total de Vendas</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('relatorio.modelo-gestao') }}" class="menu-link">
+                                <div data-i18n="Container">Modelo de Gestão</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('relatorio.modelo-gestao-2') }}" class="menu-link">
+                                <div data-i18n="Container">Modelo de Gestão 2</div>
                             </a>
                         </li>
                     </ul>

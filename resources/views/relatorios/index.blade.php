@@ -20,12 +20,12 @@
                             
                             <!-- Período -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Data Inicial:</label>
+                                <label class="form-label fw-bold">Período Inicial:</label>
                                 <input type="date" name="data_inicial" id="data_inicial" class="form-control" required>
                             </div>
                             
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Data Final:</label>
+                                <label class="form-label fw-bold">Período Final:</label>
                                 <input type="date" name="data_final" id="data_final" class="form-control" required>
                             </div>
 
