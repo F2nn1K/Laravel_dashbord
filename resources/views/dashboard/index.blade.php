@@ -10,7 +10,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h4 class="fw-bold">Dashboard - Vendas de Ouro 🏔️</h4>
-                <p class="text-muted mb-0">Bem-vindo, {{ Auth::user()->name }}! Acompanhe as operações em tempo real.</p>
+                <p class="text-muted mb-0">Bem-vindo, {{ auth()->user()->name ?? 'Usuário' }}! Acompanhe as operações em tempo real.</p>
             </div>
         </div>
 
