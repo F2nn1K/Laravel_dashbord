@@ -59,7 +59,11 @@ class ComunController extends Controller
             'euro' => $vendas->where('tp_pagamento', 'euro')->count(),
         ];
         
-        // Buscar cotação do Dólar (API AwesomeAPI - mais confiável)
+        // Cotações desabilitadas (não estão sendo usadas no dashboard)
+        $cotacao_dolar = ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
+        $cotacao_ouro = ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
+        
+        /* // Buscar cotação do Dólar (API AwesomeAPI - mais confiável)
         $cotacao_dolar = Cache::remember('cotacao_dolar_awesome', 1800, function () {
             try {
                 // AwesomeAPI tem dados em tempo real, incluindo fins de semana
@@ -102,51 +106,7 @@ class ComunController extends Controller
             }
             
             return ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
-        });
-
-        // Buscar cotação do Ouro (API AwesomeAPI - mais confiável)
-        $cotacao_ouro = Cache::remember('cotacao_ouro_awesome', 1800, function () {
-            try {
-                // AwesomeAPI - Ouro em onça troy (XAU)
-                $response = Http::timeout(5)->get('https://economia.awesomeapi.com.br/json/last/XAU-BRL');
-                
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['XAUBRL'])) {
-                        $xau = $data['XAUBRL'];
-                        return [
-                            'valor' => number_format((float)$xau['bid'], 2, ',', '.'),
-                            'variacao' => (float)$xau['pctChange'],
-                            'atualizacao' => date('H:i', strtotime($xau['create_date']))
-                        ];
-                    }
-                }
-            } catch (\Exception $e) {
-                \Log::error('Erro ao buscar cotação do ouro: ' . $e->getMessage());
-            }
-            
-            // Fallback: tentar API do BCB
-            try {
-                $url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda='XAU'&@dataInicial='" . date('m-d-Y', strtotime('-7 days')) . "'&@dataFinalCotacao='" . date('m-d-Y') . "'&\$top=1&\$format=json";
-                $response = Http::withoutVerifying()->timeout(10)->get($url);
-                
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['value'][0])) {
-                        $valorAtual = (float)$data['value'][0]['cotacaoVenda'];
-                        return [
-                            'valor' => number_format($valorAtual, 2, ',', '.'),
-                            'variacao' => 0,
-                            'atualizacao' => date('H:i')
-                        ];
-                    }
-                }
-            } catch (\Exception $e) {
-                \Log::error('Erro fallback BCB ouro: ' . $e->getMessage());
-            }
-            
-            return ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
-        });
+        }); */
         
         $pageTitle = 'Dashboard';
         return view('dashboard.index', compact(
