@@ -125,7 +125,7 @@ class ComunController extends Controller
         $pageTitle = 'Dashboard';
         return view('dashboard.index', compact(
             'mo_total_gold','mo_total_usd','mo_total_brl','mo_total_euro',
-            'vendas','pageTitle','cotacao_dolar','cotacao_ouro','faturamento_total',
+            'vendas','pageTitle','faturamento_total',
             'grafico_dias','grafico_vendas','grafico_carradas','vendas_por_pagamento'
         ));
     }
