@@ -19,22 +19,36 @@ class ComunController extends Controller
 {
     public function dashboard()
     {
-        // Vendas de hoje
-        $vendas          = Venda::whereDate('fe_add', today())->orderBy('fe_add', 'desc')->get();
-        $mo_total_usd    = $vendas->where('tp_pagamento', 'usd')->sum('mo_total');
-        $mo_total_gold   = $vendas->where('tp_pagamento', 'gold')->sum('mo_total');
-        $mo_total_brl    = $vendas->where('tp_pagamento', 'brl')->sum('mo_total');
-        $mo_total_euro   = $vendas->where('tp_pagamento', 'euro')->sum('mo_total');
+        try {
+            // Vendas de hoje
+            $vendas          = Venda::whereDate('fe_add', today())->orderBy('fe_add', 'desc')->get();
+            $mo_total_usd    = $vendas->where('tp_pagamento', 'usd')->sum('mo_total');
+            $mo_total_gold   = $vendas->where('tp_pagamento', 'gold')->sum('mo_total');
+            $mo_total_brl    = $vendas->where('tp_pagamento', 'brl')->sum('mo_total');
+            $mo_total_euro   = $vendas->where('tp_pagamento', 'euro')->sum('mo_total');
+        } catch (\Exception $e) {
+            // Se der erro, usar valores padrão
+            $vendas = collect([]);
+            $mo_total_usd = 0;
+            $mo_total_gold = 0;
+            $mo_total_brl = 0;
+            $mo_total_euro = 0;
+        }
         
-        // Calcular faturamento total (convertendo tudo para BRL estimado)
-        $faturamento_total = $mo_total_brl + ($mo_total_usd * 5.35) + ($mo_total_gold * 21000) + ($mo_total_euro * 5.80);
-        
-        // Dados para gráficos - últimos 7 dias
-        $vendas_7_dias = Venda::where('fe_add', '>=', now()->subDays(6)->startOfDay())
-            ->selectRaw('DATE(fe_add) as data, COUNT(*) as total, SUM(ca_produto) as carradas')
-            ->groupBy('data')
-            ->orderBy('data')
-            ->get();
+        try {
+            // Calcular faturamento total (convertendo tudo para USD)
+            $faturamento_total = $mo_total_usd + ($mo_total_gold * 0.1);
+            
+            // Dados para gráficos - últimos 7 dias
+            $vendas_7_dias = Venda::where('fe_add', '>=', now()->subDays(6)->startOfDay())
+                ->selectRaw('DATE(fe_add) as data, COUNT(*) as total, SUM(ca_produto) as carradas')
+                ->groupBy('data')
+                ->orderBy('data')
+                ->get();
+        } catch (\Exception $e) {
+            $faturamento_total = 0;
+            $vendas_7_dias = collect([]);
+        }
         
         // Preparar dados para o gráfico de tendência
         $grafico_dias = [];
