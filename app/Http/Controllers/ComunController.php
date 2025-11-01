@@ -19,21 +19,31 @@ class ComunController extends Controller
 {
     public function dashboard()
     {
+        // Inicializar variáveis com valores padrão
+        $vendas = collect([]);
+        $mo_total_usd = 0;
+        $mo_total_gold = 0;
+        $mo_total_brl = 0;
+        $mo_total_euro = 0;
+        
         try {
-            // Vendas de hoje
-            $vendas          = Venda::whereDate('fe_add', today())->orderBy('fe_add', 'desc')->get();
-            $mo_total_usd    = $vendas->where('tp_pagamento', 'usd')->sum('mo_total');
-            $mo_total_gold   = $vendas->where('tp_pagamento', 'gold')->sum('mo_total');
-            $mo_total_brl    = $vendas->where('tp_pagamento', 'brl')->sum('mo_total');
-            $mo_total_euro   = $vendas->where('tp_pagamento', 'euro')->sum('mo_total');
+            // Tentar buscar vendas de hoje
+            $vendas = Venda::whereDate('fe_add', today())->orderBy('fe_add', 'desc')->get();
+            $mo_total_usd = $vendas->where('tp_pagamento', 'usd')->sum('mo_total');
+            $mo_total_gold = $vendas->where('tp_pagamento', 'gold')->sum('mo_total');
+            $mo_total_brl = $vendas->where('tp_pagamento', 'brl')->sum('mo_total');
+            $mo_total_euro = $vendas->where('tp_pagamento', 'euro')->sum('mo_total');
         } catch (\Exception $e) {
-            // Se der erro, usar valores padrão
-            $vendas = collect([]);
-            $mo_total_usd = 0;
-            $mo_total_gold = 0;
-            $mo_total_brl = 0;
-            $mo_total_euro = 0;
+            \Log::error('Erro ao buscar vendas: ' . $e->getMessage());
         }
+        
+        // Inicializar variáveis de gráfico com valores padrão
+        $faturamento_total = 0;
+        $vendas_7_dias = collect([]);
+        $grafico_dias = [];
+        $grafico_vendas = [];
+        $grafico_carradas = [];
+        $vendas_por_pagamento = ['usd' => 0, 'gold' => 0, 'brl' => 0, 'euro' => 0];
         
         try {
             // Calcular faturamento total (convertendo tudo para USD)
@@ -45,33 +55,34 @@ class ComunController extends Controller
                 ->groupBy('data')
                 ->orderBy('data')
                 ->get();
-        } catch (\Exception $e) {
-            $faturamento_total = 0;
-            $vendas_7_dias = collect([]);
-        }
-        
-        // Preparar dados para o gráfico de tendência
-        $grafico_dias = [];
-        $grafico_vendas = [];
-        $grafico_carradas = [];
-        
-        for ($i = 6; $i >= 0; $i--) {
-            $data = now()->subDays($i)->format('Y-m-d');
-            $dia = now()->subDays($i)->format('d/m');
-            $venda_dia = $vendas_7_dias->firstWhere('data', $data);
             
-            $grafico_dias[] = $dia;
-            $grafico_vendas[] = $venda_dia ? $venda_dia->total : 0;
-            $grafico_carradas[] = $venda_dia ? $venda_dia->carradas : 0;
+            // Preparar dados para o gráfico de tendência
+            for ($i = 6; $i >= 0; $i--) {
+                $data = now()->subDays($i)->format('Y-m-d');
+                $dia = now()->subDays($i)->format('d/m');
+                $venda_dia = $vendas_7_dias->firstWhere('data', $data);
+                
+                $grafico_dias[] = $dia;
+                $grafico_vendas[] = $venda_dia ? $venda_dia->total : 0;
+                $grafico_carradas[] = $venda_dia ? $venda_dia->carradas : 0;
+            }
+            
+            // Vendas por forma de pagamento (para gráfico de pizza)
+            $vendas_por_pagamento = [
+                'usd' => $vendas->where('tp_pagamento', 'usd')->count(),
+                'gold' => $vendas->where('tp_pagamento', 'gold')->count(),
+                'brl' => $vendas->where('tp_pagamento', 'brl')->count(),
+                'euro' => $vendas->where('tp_pagamento', 'euro')->count(),
+            ];
+        } catch (\Exception $e) {
+            \Log::error('Erro ao gerar gráficos: ' . $e->getMessage());
+            // Usar valores padrão já inicializados
+            for ($i = 6; $i >= 0; $i--) {
+                $grafico_dias[] = now()->subDays($i)->format('d/m');
+                $grafico_vendas[] = 0;
+                $grafico_carradas[] = 0;
+            }
         }
-        
-        // Vendas por forma de pagamento (para gráfico de pizza)
-        $vendas_por_pagamento = [
-            'usd' => $vendas->where('tp_pagamento', 'usd')->count(),
-            'gold' => $vendas->where('tp_pagamento', 'gold')->count(),
-            'brl' => $vendas->where('tp_pagamento', 'brl')->count(),
-            'euro' => $vendas->where('tp_pagamento', 'euro')->count(),
-        ];
         
         // Cotações desabilitadas (não estão sendo usadas no dashboard)
         $cotacao_dolar = ['valor' => 'N/A', 'variacao' => 0, 'atualizacao' => '--:--'];
