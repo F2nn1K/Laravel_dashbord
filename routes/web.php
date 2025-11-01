@@ -35,7 +35,7 @@ Route::get('/cadastro', function () {return view('auth.register');})->name('cada
 Route::post('/logon', [AuthController::class, 'logon'])->name('logon');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-Route::middleware(['auth', 'prevent.back'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
 // Logout - aceitar tanto GET quanto POST
 Route::match(['get', 'post'], '/logout', function () {
