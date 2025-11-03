@@ -58,7 +58,7 @@
 
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
-                @if(hasPermission('view-dashboard'))
+                @if(!function_exists('hasPermission') || hasPermission('view-dashboard'))
                 <li class="menu-item active">
                     <a href="{{ route('dashboard') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -67,7 +67,7 @@
                 </li>
                 @endif
 
-                @if(hasPermission('view-asociados'))
+                @if(!function_exists('hasPermission') || hasPermission('view-asociados'))
                 <li class="menu-item">
                     <a href="{{ route('asociado') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -76,7 +76,7 @@
                 </li>
                 @endif
 
-                @if(hasPermission('view-investidores'))
+                @if(!function_exists('hasPermission') || hasPermission('view-investidores'))
                 <li class="menu-item">
                     <a href="{{ route('investidor') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -85,7 +85,7 @@
                 </li>
                 @endif
 
-                @if(hasPermission('view-outros'))
+                @if(!function_exists('hasPermission') || hasPermission('view-outros'))
                 <li class="menu-item">
                     <a href="{{ route('outro') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -95,7 +95,7 @@
                 @endif
 
                 <!-- Estoque -->
-                @if(hasPermission('view-produtos'))
+                @if(!function_exists('hasPermission') || hasPermission('view-produtos'))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -113,7 +113,7 @@
                 @endif
 
                 <!-- Vendas -->
-                @if(hasAnyPermission(['view-vendas', 'manage-caixa']))
+                @if(!function_exists('hasAnyPermission') || hasAnyPermission(['view-vendas', 'manage-caixa']))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -121,7 +121,7 @@
                     </a>
 
                     <ul class="menu-sub">
-                        @if(hasPermission('manage-caixa'))
+                        @if(!function_exists('hasPermission') || hasPermission('manage-caixa'))
                         <li class="menu-item">
                             <a href="{{ route('abrir-encerrar-venda') }}" class="menu-link">
                                 <div data-i18n="Without menu">Abrir/Encerrar Vendas</div>
@@ -129,7 +129,7 @@
                         </li>
                         @endif
                         
-                        @if(hasPermission('view-vendas'))
+                        @if(!function_exists('hasPermission') || hasPermission('view-vendas'))
                         <li class="menu-item">
                             <a href="{{ route('venda') }}" class="menu-link">
                                 <div data-i18n="Without menu">Venda</div>
@@ -141,7 +141,7 @@
                 @endif
 
                 <!-- Relatórios -->
-                @if(hasPermission('view-relatorios'))
+                @if(!function_exists('hasPermission') || hasPermission('view-relatorios'))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -149,7 +149,7 @@
                     </a>
 
                     <ul class="menu-sub">
-                        @if(hasPermission('relatorio-total-vendas'))
+                        @if(!function_exists('hasPermission') || hasPermission('relatorio-total-vendas'))
                         <li class="menu-item">
                             <a href="{{ route('relatorio') }}" class="menu-link">
                                 <div data-i18n="Container">Total de Vendas</div>
@@ -157,7 +157,7 @@
                         </li>
                         @endif
                         
-                        @if(hasPermission('relatorio-modelo-gestao'))
+                        @if(!function_exists('hasPermission') || hasPermission('relatorio-modelo-gestao'))
                         <li class="menu-item">
                             <a href="{{ route('relatorio.modelo-gestao') }}" class="menu-link">
                                 <div data-i18n="Container">Modelo de Gestão</div>
@@ -165,7 +165,7 @@
                         </li>
                         @endif
                         
-                        @if(hasPermission('relatorio-modelo-gestao-2'))
+                        @if(!function_exists('hasPermission') || hasPermission('relatorio-modelo-gestao-2'))
                         <li class="menu-item">
                             <a href="{{ route('relatorio.modelo-gestao-2') }}" class="menu-link">
                                 <div data-i18n="Container">Modelo de Gestão 2</div>
@@ -176,13 +176,13 @@
                 </li>
                 @endif
 
-                @if(hasAnyPermission(['view-usuarios', 'view-empresas', 'manage-permissions', 'manage-roles']))
+                @if(!function_exists('hasAnyPermission') || hasAnyPermission(['view-usuarios', 'view-empresas', 'manage-permissions', 'manage-roles']))
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Admin</span>
                 </li>
                 @endif
 
-                @if(hasPermission('view-usuarios'))
+                @if(!function_exists('hasPermission') || hasPermission('view-usuarios'))
                 <li class="menu-item">
                     <a href="{{ route('usuario') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -191,7 +191,7 @@
                 </li>
                 @endif
 
-                @if(hasPermission('view-empresas'))
+                @if(!function_exists('hasPermission') || hasPermission('view-empresas'))
                 <li class="menu-item">
                     <a href="{{ route('empresa') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -201,7 +201,7 @@
                 @endif
 
                 <!-- Permissões e Perfis -->
-                @if(hasAnyPermission(['manage-roles', 'manage-permissions']))
+                @if(!function_exists('hasAnyPermission') || hasAnyPermission(['manage-roles', 'manage-permissions']))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-shield"></i>
@@ -209,7 +209,7 @@
                     </a>
 
                     <ul class="menu-sub">
-                        @if(hasPermission('manage-roles'))
+                        @if(!function_exists('hasPermission') || hasPermission('manage-roles'))
                         <li class="menu-item">
                             <a href="{{ route('perfis') }}" class="menu-link">
                                 <div data-i18n="Without menu">Perfis</div>
@@ -217,7 +217,7 @@
                         </li>
                         @endif
                         
-                        @if(hasPermission('manage-permissions'))
+                        @if(!function_exists('hasPermission') || hasPermission('manage-permissions'))
                         <li class="menu-item">
                             <a href="{{ route('permissions') }}" class="menu-link">
                                 <div data-i18n="Without menu">Permissões</div>
@@ -228,7 +228,7 @@
                 </li>
                 @endif
 
-                @if(hasPermission('view-configuracoes'))
+                @if(!function_exists('hasPermission') || hasPermission('view-configuracoes'))
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Configurações</span>
                 </li>
