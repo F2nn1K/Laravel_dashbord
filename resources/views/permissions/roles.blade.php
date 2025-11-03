@@ -231,11 +231,12 @@ $(document).ready(function() {
                         success: function(response) {
                             Swal.fire({
                                 icon: "success",
-                                text: "Permissões atualizadas com sucesso!",
+                                text: response.message,
                                 timer: 2000,
+                                showConfirmButton: false
                             }).then(() => {
-                                // Recarregar a página para mostrar as mudanças
-                                location.reload();
+                                // Recarregar a página para aplicar mudanças
+                                window.location.href = window.location.href + '?t=' + new Date().getTime();
                             });
                         },
                         error: function(xhr) {

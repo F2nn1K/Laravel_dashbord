@@ -124,7 +124,6 @@ $(document).ready(function () {
     });
 
     function updRow() {
-
         var id = $(this).attr("data-id");
         let url = $(this).attr("data-url") + id;
         let urlFrm = $(this).attr("data-url-frm") + id;
@@ -135,24 +134,21 @@ $(document).ready(function () {
             dataType: "json",
             success: function (res) {
                 $("#frmUpd").attr("action", urlFrm);
-                $("#modalUpd #nome").val(res.data.nome);
-                $("#modalUpd #endereco").val(res.data.endereco);
-                $("#modalUpd #telefone").val(res.data.telefone);
-                $("#modalUpd #rampa").val(res.data.rampa);
-                $("#modalUpd #aut_nome").val(res.data.aut_nome);
-                $("#modalUpd #aut_telefone").val(res.data.aut_telefone);
-                $("#modalUpd #doc_identificacao").val(res.data.doc_identificacao);
-                $("#modalUpd #associado").val(res.data.associado);
-                $("#modalUpd #contrato").val(res.data.contrato);
-                $("#modalUpd #in_estatus").val(res.data.in_estatus).trigger('change');
+                $("#upd_name").val(res.data.name);
+                $("#upd_email").val(res.data.email);
+                $("#upd_role").val(res.data.role).trigger('change');
+                $("#upd_status").val(res.data.in_estatus || 'ativo').trigger('change');
+                
+                // Limpar campos de senha
+                $("#upd_password").val('');
+                $("#upd_password_confirmation").val('');
 
                 $("#modalUpd").modal("show");
-
             },
             error: function (data) {
                 Swal.fire({
                     icon: "error",
-                    text: "Erro ao obter dados da perssoa",
+                    text: "Erro ao obter dados do usuário",
                     timer: 3000,
                 });
             },

@@ -128,9 +128,14 @@ class RoleController extends Controller
             \App\Helpers\PermissionHelper::clearUserPermissionsCache($userId);
         }
 
+        // Limpar TODOS os caches para garantir
+        \Cache::flush();
+        \Artisan::call('cache:clear');
+        \Artisan::call('view:clear');
+
         return response()->json([
             'status' => true,
-            'message' => 'Perfil atualizado com sucesso'
+            'message' => 'Permissões atualizadas com sucesso!'
         ]);
     }
 

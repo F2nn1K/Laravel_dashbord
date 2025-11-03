@@ -131,87 +131,62 @@
 
 <!-- Modal Upd -->
 <div class="modal fade" id="modalUpd" tabindex="-1" aria-labelledby="modalUpdLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalUpdLabel">Editar dados</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="{{ __('messages.close') }}"></button>
+                <h5 class="modal-title" id="modalUpdLabel">Editar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">
-
-                <form id="frmUpdPerson" class="mb-3" action="#" method="POST">
-
+                <form id="frmUpd" class="mb-3" action="#" method="POST">
                     <div class="row g-3">
-
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Nome <b class="text-danger">*</b></h6>
-                            <input type="text" class="form-control" name="name" id="name" />
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Nome:</label>
+                            <input type="text" name="name" id="upd_name" class="form-control" required>
                         </div>
 
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">CPF <b class="text-danger">*</b></h6>
-                            <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF da pessoa" />
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Email:</label>
+                            <input type="email" name="email" id="upd_email" class="form-control" required>
                         </div>
 
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Telefone</h6>
-                            <input type="text" class="form-control" name="telefono1" id="telefono1"
-                                placeholder="Telefone" />
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Role/Perfil:</label>
+                            <select name="role" id="upd_role" class="form-select" required>
+                                <option value="">Selecione</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="user">User</option>
+                            </select>
                         </div>
 
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Telefone secundário</h6>
-                            <input type="text" class="form-control" name="telefono2" id="telefono2"
-                                placeholder="Telefone secundário" />
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Status:</label>
+                            <select name="in_estatus" id="upd_status" class="form-select">
+                                <option value="ativo">Ativo</option>
+                                <option value="inativo">Inativo</option>
+                            </select>
                         </div>
 
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">CEP</h6>
-                            <input type="text" class="form-control" name="cep" id="cep" placeholder="CEP" />
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Nova Senha (deixe vazio para não alterar):</label>
+                            <input type="password" name="password" id="upd_password" class="form-control" placeholder="Nova senha">
                         </div>
 
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Estado</h6>
-                            <input type="text" class="form-control" name="estado" id="estado" placeholder="Estado" />
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Confirmar Nova Senha:</label>
+                            <input type="password" name="password_confirmation" id="upd_password_confirmation" class="form-control" placeholder="Confirmar senha">
                         </div>
-
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Barrio</h6>
-                            <input type="text" class="form-control" name="barrio" id="barrio" placeholder="Barrio" />
-                        </div>
-
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Rua</h6>
-                            <input type="text" class="form-control" name="rua" id="rua" placeholder="Rua" />
-                        </div>
-
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Complemento</h6>
-                            <input type="text" class="form-control" name="complemento" id="complemento"
-                                placeholder="Complemento" />
-                        </div>
-
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <h6 class="text-dark fw-400">Ponto Referência</h6>
-                            <input type="text" class="form-control" name="ponto_referencia" id="ponto_referencia"
-                                placeholder="Ponto Referência" />
-                        </div>
-
-
                     </div>
 
                     <div class="row justify-content-end mt-4">
-
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <button type="submit"
-                                class="btn btn-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><b><i
-                                        class=" bx bx-save me-1"></i>Salvar</b></button>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bx bx-save me-1"></i> Atualizar
+                            </button>
                         </div>
-
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
