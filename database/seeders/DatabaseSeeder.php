@@ -15,5 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // Criar usuário admin
         $this->call(AdminUserSeeder::class);
+        
+        // Criar permissões e perfis (ACL)
+        // Só roda se as tabelas existirem
+        if (\Schema::hasTable('permissions') && \Schema::hasTable('roles')) {
+            $this->call(PermissionsSeeder::class);
+        }
     }
 }
