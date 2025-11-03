@@ -13,12 +13,17 @@ class PermissionController extends Controller
     public function index()
     {
         $pageTitle = 'Gerenciar Permissões';
-        $permissions = DB::table('permissions')
-            ->where('in_estatus', 'ativo')
-            ->orderBy('module', 'asc')
-            ->orderBy('name', 'asc')
-            ->get();
-            
+        try {
+            $permissions = DB::table('permissions')
+                ->where('in_estatus', 'ativo')
+                ->orderBy('module', 'asc')
+                ->orderBy('name', 'asc')
+                ->get();
+        } catch (\Throwable $e) {
+            \Log::warning('Falha ao carregar permissões: ' . $e->getMessage());
+            $permissions = collect();
+        }
+
         return view('permissions.index', compact('pageTitle', 'permissions'));
     }
 
