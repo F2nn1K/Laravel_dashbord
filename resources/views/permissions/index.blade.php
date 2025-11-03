@@ -13,53 +13,7 @@
     </h4>
     <p class="text-muted">Configure permissões e controle de acesso do sistema</p>
 
-    <!-- Tabs -->
-    <ul class="nav nav-pills mb-3" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#usuarios-tab" type="button" role="tab">
-                <i class="bx bx-user me-1"></i> Usuários
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#perfis-tab" type="button" role="tab">
-                <i class="bx bx-group me-1"></i> Perfis
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#permissoes-tab" type="button" role="tab">
-                <i class="bx bx-key me-1"></i> Permissões
-            </button>
-        </li>
-    </ul>
-
-    <!-- Tab Content -->
-    <div class="tab-content">
-        <!-- Tab Usuários -->
-        <div class="tab-pane fade" id="usuarios-tab" role="tabpanel">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Gerenciar Usuários e seus Perfis</h5>
-                </div>
-                <div class="card-body">
-                    <p>Acesse <a href="{{ route('usuario') }}">Gerenciar Usuários</a> para atribuir perfis aos usuários.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Perfis -->
-        <div class="tab-pane fade" id="perfis-tab" role="tabpanel">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Gerenciar Perfis</h5>
-                </div>
-                <div class="card-body">
-                    <p>Acesse <a href="{{ route('perfis') }}">Gerenciar Perfis</a> para criar perfis e atribuir permissões.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Permissões -->
-        <div class="tab-pane fade show active" id="permissoes-tab" role="tabpanel">
+    <!-- Conteúdo: apenas Permissões -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Permissões Disponíveis</h5>
@@ -109,8 +63,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 </div>
 
 <!-- Modal Adicionar -->
