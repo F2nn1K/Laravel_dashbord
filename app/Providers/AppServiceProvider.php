@@ -19,9 +19,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Detectar schema automaticamente (HTTP ou HTTPS)
-        if (request()->isSecure() || request()->header('X-Forwarded-Proto') === 'https') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+        // Detectar schema automaticamente (HTTP ou HTTPS) – nunca falhar a request
+        try {
+            $isHttps = false;
+            if (function_exists('request')) {
+                $req = request();
+                $isHttps = ($req && ($req->isSecure() || $req->header('X-Forwarded-Proto') === 'https'));
+            }
+            if (!$isHttps && isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+                $isHttps = $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https';
+            }
+            if ($isHttps) {
+                \Illuminate\Support\Facades\URL::forceScheme('https');
+            }
+        } catch (\Throwable $e) {
+            // Ignorar qualquer erro aqui para não derrubar a aplicação em produção
+            \Log::warning('forceScheme ignorado: ' . $e->getMessage());
         }
 
         // Auto-seed do ACL em produção, se necessário (idempotente)
