@@ -19,20 +19,35 @@ class PermissionHelper
             return false;
         }
 
+        // FALLBACK: Se tabelas não existirem, retorna true (mostra tudo)
+        try {
+            if (!\Schema::hasTable('permissions') || !\Schema::hasTable('roles') || !\Schema::hasTable('user_role')) {
+                return true; // Modo compatibilidade - mostra tudo
+            }
+        } catch (\Exception $e) {
+            return true; // Se der erro, mostra tudo
+        }
+
         // Cache por 5 minutos para performance
         $cacheKey = "user_{$user->id}_permissions";
         
-        $userPermissions = Cache::remember($cacheKey, 300, function() use ($user) {
-            return DB::table('permissions')
-                ->join('role_permission', 'permissions.id', '=', 'role_permission.permission_id')
-                ->join('user_role', 'role_permission.role_id', '=', 'user_role.role_id')
-                ->where('user_role.user_id', $user->id)
-                ->where('permissions.in_estatus', 'ativo')
-                ->pluck('permissions.code')
-                ->toArray();
-        });
+        try {
+            $userPermissions = Cache::remember($cacheKey, 300, function() use ($user) {
+                return DB::table('permissions')
+                    ->join('role_permission', 'permissions.id', '=', 'role_permission.permission_id')
+                    ->join('user_role', 'role_permission.role_id', '=', 'user_role.role_id')
+                    ->where('user_role.user_id', $user->id)
+                    ->where('permissions.in_estatus', 'ativo')
+                    ->pluck('permissions.code')
+                    ->toArray();
+            });
 
-        return in_array($permissionCode, $userPermissions);
+            return in_array($permissionCode, $userPermissions);
+        } catch (\Exception $e) {
+            // Se der erro na query, retorna true (mostra tudo)
+            \Log::warning('Erro ao verificar permissão: ' . $e->getMessage());
+            return true;
+        }
     }
 
     /**
