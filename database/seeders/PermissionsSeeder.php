@@ -70,7 +70,8 @@ class PermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            DB::table('permissions')->insert($permission);
+            // Evitar duplicidade se rodar mais de uma vez
+            DB::table('permissions')->insertOrIgnore($permission);
         }
 
         // Criar perfis
@@ -82,7 +83,7 @@ class PermissionsSeeder extends Seeder
         ];
 
         foreach ($roles as $role) {
-            DB::table('roles')->insert($role);
+            DB::table('roles')->insertOrIgnore($role);
         }
 
         // Atribuir TODAS permissões ao Admin
@@ -90,7 +91,7 @@ class PermissionsSeeder extends Seeder
         $allPermissions = DB::table('permissions')->pluck('id');
         
         foreach ($allPermissions as $permissionId) {
-            DB::table('role_permission')->insert([
+            DB::table('role_permission')->insertOrIgnore([
                 'role_id' => $adminRoleId,
                 'permission_id' => $permissionId,
             ]);
@@ -99,7 +100,7 @@ class PermissionsSeeder extends Seeder
         // Atribuir perfil Admin ao usuário admin
         $adminUserId = DB::table('users')->where('name', 'admin')->value('id');
         if ($adminUserId) {
-            DB::table('user_role')->insert([
+            DB::table('user_role')->insertOrIgnore([
                 'user_id' => $adminUserId,
                 'role_id' => $adminRoleId,
             ]);

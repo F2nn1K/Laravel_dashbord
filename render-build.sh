@@ -19,6 +19,9 @@ mkdir -p storage/logs
 touch storage/logs/laravel.log
 chmod -R 775 storage bootstrap/cache || true
 
+# Seed básico do ACL (idempotente)
+php artisan db:seed --class=PermissionsSeeder --force || true
+
 # Limpar caches
 php artisan config:clear
 php artisan cache:clear
