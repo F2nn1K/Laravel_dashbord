@@ -13,7 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Criar usuário admin
+        // ACL (idempotente)
+        $this->call(PermissionsSeeder::class);
+
+        // Criar usuário admin (idempotente)
         $this->call(AdminUserSeeder::class);
     }
 }
