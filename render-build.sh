@@ -11,6 +11,14 @@ composer dump-autoload
 # Rodar migrations
 php artisan migrate --force
 
+# Garantir pastas de cache/sessões/logs
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
+mkdir -p storage/logs
+touch storage/logs/laravel.log
+chmod -R 775 storage bootstrap/cache || true
+
 # Limpar caches
 php artisan config:clear
 php artisan cache:clear
