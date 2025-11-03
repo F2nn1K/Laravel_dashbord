@@ -12,6 +12,8 @@ use App\Http\Controllers\admin\ProdutoController;
 use App\Http\Controllers\admin\RelatorioController;
 use App\Http\Controllers\admin\AbrirEncerrarVendaController;
 use App\Http\Controllers\admin\VendaController;
+use App\Http\Controllers\admin\PermissionController;
+use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComunController;
 
@@ -183,5 +185,24 @@ Route::get('/modelo-gestao-2/gerar', [RelatorioController::class, 'gerarModeloGe
 });
 
 Route::get('/produto/{id}/preco', [ComunController::class, 'obterPrecoProduto']);
+
+// Gerenciamento de Permissões e Perfis (ACL)
+Route::prefix('permission')->group(function () {
+    Route::get('/', [PermissionController::class, 'index'])->name('permissions');
+    Route::get('/all', [PermissionController::class, 'all'])->name('permission.all');
+    Route::post('/add', [PermissionController::class, 'add'])->name('permission.add');
+    Route::get('/edt/id/{id}', [PermissionController::class, 'edt'])->name('permission.edt');
+    Route::post('/upd/id/{id}', [PermissionController::class, 'upd'])->name('permission.upd');
+    Route::get('/del/id/{id}', [PermissionController::class, 'del'])->name('permission.del');
+});
+
+Route::prefix('perfis')->group(function () {
+    Route::get('/', [RoleController::class, 'index'])->name('perfis');
+    Route::get('/all', [RoleController::class, 'all'])->name('perfis.all');
+    Route::post('/add', [RoleController::class, 'add'])->name('perfis.add');
+    Route::get('/edt/id/{id}', [RoleController::class, 'edt'])->name('perfis.edt');
+    Route::post('/upd/id/{id}', [RoleController::class, 'upd'])->name('perfis.upd');
+    Route::get('/del/id/{id}', [RoleController::class, 'del'])->name('perfis.del');
+});
 
 });

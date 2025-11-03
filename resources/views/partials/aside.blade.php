@@ -59,34 +59,44 @@
 
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
+                @if(hasPermission('view-dashboard'))
                 <li class="menu-item active">
                     <a href="{{ route('dashboard') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
                         <div data-i18n="Analytics">Dashboard</div>
                     </a>
                 </li>
+                @endif
+
+                @if(hasPermission('view-asociados'))
                 <li class="menu-item">
                     <a href="{{ route('asociado') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
                         <div data-i18n="Basic">Asociados</div>
                     </a>
                 </li>
+                @endif
 
+                @if(hasPermission('view-investidores'))
                 <li class="menu-item">
                     <a href="{{ route('investidor') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
                         <div data-i18n="Basic">Investidores</div>
                     </a>
                 </li>
+                @endif
 
+                @if(hasPermission('view-outros'))
                 <li class="menu-item">
                     <a href="{{ route('outro') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
                         <div data-i18n="Basic">Outros</div>
                     </a>
                 </li>
+                @endif
 
                 <!-- Estoque -->
+                @if(hasPermission('view-produtos'))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -99,16 +109,12 @@
                                 <div data-i18n="Without menu">Produtos</div>
                             </a>
                         </li>
-
-                        {{-- <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Without menu">Entrada Carradas</div>
-                            </a>
-                        </li> --}}
                     </ul>
                 </li>
+                @endif
 
-                <!-- Estoque -->
+                <!-- Vendas -->
+                @if(hasAnyPermission(['view-vendas', 'manage-caixa']))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -116,18 +122,24 @@
                     </a>
 
                     <ul class="menu-sub">
+                        @if(hasPermission('manage-caixa'))
                         <li class="menu-item">
                             <a href="{{ route('abrir-encerrar-venda') }}" class="menu-link">
                                 <div data-i18n="Without menu">Abrir/Encerrar Vendas</div>
                             </a>
                         </li>
+                        @endif
+                        
+                        @if(hasPermission('view-vendas'))
                         <li class="menu-item">
                             <a href="{{ route('venda') }}" class="menu-link">
                                 <div data-i18n="Without menu">Venda</div>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </li>
+                @endif
 
                 <!-- Relatórios -->
                 <li class="menu-item">
@@ -155,22 +167,59 @@
                     </ul>
                 </li>
 
+                @if(hasAnyPermission(['view-usuarios', 'view-empresas', 'manage-permissions', 'manage-roles']))
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Admin</span>
                 </li>
+                @endif
+
+                @if(hasPermission('view-usuarios'))
                 <li class="menu-item">
                     <a href="{{ route('usuario') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
                         <div data-i18n="Basic">Usuarios</div>
                     </a>
                 </li>
+                @endif
+
+                @if(hasPermission('view-empresas'))
                 <li class="menu-item">
                     <a href="{{ route('empresa') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-collection"></i>
                         <div data-i18n="Basic">Empresas</div>
                     </a>
                 </li>
+                @endif
 
+                <!-- Permissões e Perfis -->
+                @if(hasAnyPermission(['manage-roles', 'manage-permissions']))
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-shield"></i>
+                        <div data-i18n="Layouts">Permissões</div>
+                    </a>
+
+                    <ul class="menu-sub">
+                        @if(hasPermission('manage-roles'))
+                        <li class="menu-item">
+                            <a href="{{ route('perfis') }}" class="menu-link">
+                                <div data-i18n="Without menu">Perfis</div>
+                            </a>
+                        </li>
+                        @endif
+                        
+                        @if(hasPermission('manage-permissions'))
+                        <li class="menu-item">
+                            <a href="{{ route('permissions') }}" class="menu-link">
+                                <div data-i18n="Without menu">Permissões</div>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
+
+                @if(hasPermission('view-configuracoes'))
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Configurações</span>
                 </li>
@@ -180,6 +229,7 @@
                         <div data-i18n="Basic">Configurações</div>
                     </a>
                 </li>
+                @endif
             </ul>
 
         </aside>
@@ -244,12 +294,17 @@
 
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
+                @if(hasPermission('view-dashboard'))
                 <li class="menu-item active">
                     <a href="{{ route('dashboard') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
                         <div data-i18n="Analytics">Dashboard</div>
                     </a>
                 </li>
+                @endif
+
+                <!-- Vendas -->
+                @if(hasPermission('view-vendas'))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -263,8 +318,10 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
                 <!-- Relatórios -->
+                @if(hasPermission('view-relatorios'))
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -272,23 +329,32 @@
                     </a>
 
                     <ul class="menu-sub">
+                        @if(hasPermission('relatorio-total-vendas'))
                         <li class="menu-item">
                             <a href="{{ route('relatorio') }}" class="menu-link">
                                 <div data-i18n="Container">Total de Vendas</div>
                             </a>
                         </li>
+                        @endif
+                        
+                        @if(hasPermission('relatorio-modelo-gestao'))
                         <li class="menu-item">
                             <a href="{{ route('relatorio.modelo-gestao') }}" class="menu-link">
                                 <div data-i18n="Container">Modelo de Gestão</div>
                             </a>
                         </li>
+                        @endif
+                        
+                        @if(hasPermission('relatorio-modelo-gestao-2'))
                         <li class="menu-item">
                             <a href="{{ route('relatorio.modelo-gestao-2') }}" class="menu-link">
                                 <div data-i18n="Container">Modelo de Gestão 2</div>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </li>
+                @endif
             </ul>
 
         </aside>
