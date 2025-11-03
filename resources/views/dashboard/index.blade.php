@@ -9,7 +9,7 @@
         <!-- Título -->
         <div class="row mb-4">
             <div class="col-12">
-                <h4 class="fw-bold">Dashboard - Vendas de Ouro 🏔️</h4>
+                <h4 class="fw-bold">Dashboard</h4>
                 <p class="text-muted mb-0">Bem-vindo, {{ auth()->user()->name ?? 'Usuário' }}! Acompanhe as operações em tempo real.</p>
             </div>
         </div>
