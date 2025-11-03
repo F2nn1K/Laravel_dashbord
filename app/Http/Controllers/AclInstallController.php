@@ -34,6 +34,12 @@ class AclInstallController extends Controller
                 '--force' => true,
             ]);
 
+            // Limpar e recachear views/config para refletir alterações de Blade
+            Artisan::call('view:clear');
+            Artisan::call('config:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('config:cache');
+
             $counts = [
                 'permissions' => Schema::hasTable('permissions') ? (int) DB::table('permissions')->count() : 0,
                 'roles' => Schema::hasTable('roles') ? (int) DB::table('roles')->count() : 0,
