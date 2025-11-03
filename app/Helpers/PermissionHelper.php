@@ -42,6 +42,12 @@ class PermissionHelper
                     ->toArray();
             });
 
+            // Modo compatibilidade: se o usuário não tiver nenhuma permissão atribuída,
+            // consideramos que todas as permissões estão liberadas para evitar menu vazio em produção
+            if (empty($userPermissions)) {
+                return true;
+            }
+
             return in_array($permissionCode, $userPermissions);
         } catch (\Exception $e) {
             // Se der erro na query, retorna true (mostra tudo)
