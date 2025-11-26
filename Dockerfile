@@ -43,18 +43,6 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 # Expor porta
 EXPOSE 10000
 
-# Criar script de inicialização inline
-RUN echo '#!/bin/sh' > /start.sh && \
-    echo 'php -S 0.0.0.0:${PORT:-10000} -t public &' >> /start.sh && \
-    echo 'sleep 3' >> /start.sh && \
-    echo 'for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do' >> /start.sh && \
-    echo '  php artisan migrate --force 2>&1 && break' >> /start.sh && \
-    echo '  sleep 3' >> /start.sh && \
-    echo 'done' >> /start.sh && \
-    echo 'php artisan db:seed --class=PermissionsSeeder --force 2>&1 || true' >> /start.sh && \
-    echo 'wait' >> /start.sh && \
-    chmod +x /start.sh
-
-# Executar script
-CMD ["/start.sh"]
+# Inicialização MINIMALISTA - apenas servidor
+CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
 
