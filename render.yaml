@@ -1,0 +1,72 @@
+services:
+  # Web Service (Laravel Application)
+  - type: web
+    name: marudi-mountain
+    env: docker
+    region: oregon
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /login
+    envVars:
+      - key: APP_NAME
+        value: Marudi Mountain
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: APP_TIMEZONE
+        value: America/Sao_Paulo
+      - key: APP_URL
+        sync: false
+      - key: APP_LOCALE
+        value: pt
+      - key: APP_FALLBACK_LOCALE
+        value: pt
+      - key: LOG_CHANNEL
+        value: errorlog
+      - key: LOG_LEVEL
+        value: error
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase:
+          name: marudi-mountain-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: marudi-mountain-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: marudi-mountain-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: marudi-mountain-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: marudi-mountain-db
+          property: password
+      - key: SESSION_DRIVER
+        value: file
+      - key: SESSION_LIFETIME
+        value: 120
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: BCRYPT_ROUNDS
+        value: 12
+
+  # MySQL Database
+databases:
+  - name: marudi-mountain-db
+    databaseName: marudimountain
+    user: marudiuser
+    plan: free
+    region: oregon
+

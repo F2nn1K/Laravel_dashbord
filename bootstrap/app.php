@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Prevenir acesso a páginas após logout
+        $middleware->alias([
+            'prevent.back' => \App\Http\Middleware\PreventBackAfterLogout::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
