@@ -71,24 +71,34 @@ try {
         echo "🔑 Senha: admin123\n";
     } else {
         echo "⚠️ Status: $status\n\n";
-        echo "Conteúdo da resposta:\n";
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        echo "📄 CONTEÚDO COMPLETO DA RESPOSTA:\n";
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+        
         $content = $response->getContent();
+        
+        // Mostrar TODO o conteúdo
+        echo htmlspecialchars($content);
+        
+        echo "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        echo "📋 ANÁLISE DO ERRO\n";
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
         
         // Procurar por erros específicos
         if (strpos($content, 'Vite') !== false || strpos($content, 'manifest') !== false) {
-            echo "❌ ERRO: Assets do Vite não encontrados!\n\n";
-            echo "SOLUÇÃO: Executar npm run build\n";
-        } else if (strpos($content, 'APP_KEY') !== false) {
-            echo "❌ ERRO: APP_KEY não configurada corretamente!\n\n";
+            echo "❌ PROBLEMA: Assets do Vite (CSS/JS)\n\n";
+            echo "O que fazer:\n";
+            echo "1. Verificar se public/build/manifest.json existe\n";
+            echo "2. Verificar se public/build/assets/ tem arquivos\n";
+        } else if (strpos($content, 'Class') !== false && strpos($content, 'not found') !== false) {
+            echo "❌ PROBLEMA: Classe PHP não encontrada\n\n";
+            echo "Solução: Rodar composer dump-autoload\n";
+        } else if (strpos($content, 'View') !== false && strpos($content, 'not found') !== false) {
+            echo "❌ PROBLEMA: View Blade não encontrada\n\n";
         } else {
-            echo substr($content, 0, 1000) . "\n\n";
+            echo "⚠️ Erro não identificado automaticamente\n";
+            echo "Veja o conteúdo acima para mais detalhes\n";
         }
-        
-        echo "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        echo "📋 DIAGNÓSTICO\n";
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        echo "Execute install.php novamente:\n";
-        echo "→ <a href='/install.php?token=marudi2025' style='color:#10b981'>/install.php?token=marudi2025</a>\n";
     }
     
 } catch (\Exception $e) {
