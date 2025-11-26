@@ -6,6 +6,7 @@ services:
     plan: free
     branch: main
     dockerfilePath: ./Dockerfile
+    healthCheckPath: /health.html
     envVars:
       - key: APP_NAME
         value: Marudi Mountain

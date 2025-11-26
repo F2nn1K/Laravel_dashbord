@@ -43,6 +43,6 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 # Expor porta
 EXPOSE 10000
 
-# Script inline para garantir que servidor inicia IMEDIATAMENTE
-CMD sh -c "php artisan config:clear && php artisan serve --host=0.0.0.0 --port=\${PORT:-10000} --tries=0"
+# Servidor PHP built-in - MAIS RÁPIDO
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-10000} -t public"]
 
