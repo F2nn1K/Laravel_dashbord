@@ -8,9 +8,6 @@ composer install --optimize-autoloader --no-dev
 # Dump autoload (carregar helpers)
 composer dump-autoload
 
-# Rodar migrations
-php artisan migrate --force
-
 # Garantir pastas de cache/sessões/logs
 mkdir -p storage/framework/sessions
 mkdir -p storage/framework/views
@@ -19,14 +16,10 @@ mkdir -p storage/logs
 touch storage/logs/laravel.log
 chmod -R 775 storage bootstrap/cache || true
 
-# Seed básico do ACL (idempotente)
-php artisan db:seed --class=PermissionsSeeder --force || true
-
 # Limpar caches
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
 
-# Cachear config
-php artisan config:cache
+echo "✅ Build completo! Migrations serão executadas após o deploy."
 

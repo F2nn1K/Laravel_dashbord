@@ -43,18 +43,18 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 # Expor porta
 EXPOSE 10000
 
-# Comando de inicialização - SERVIDOR PRIMEIRO, migrations em background
-CMD (echo "🚀 Iniciando servidor na porta ${PORT:-10000}..." && \
-    php -S 0.0.0.0:${PORT:-10000} -t public public/index.php) & \
-    SERVER_PID=$! && \
-    echo "✅ Servidor iniciado! PID: $SERVER_PID" && \
-    sleep 5 && \
-    echo "📦 Executando migrations em background..." && \
-    (for i in 1 2 3 4 5 6 7 8 9 10; do \
-        php artisan migrate --force 2>&1 && break || sleep 5; \
-    done && \
-    php artisan db:seed --class=PermissionsSeeder --force 2>&1 || true && \
-    php artisan config:cache 2>&1 && \
-    echo "✅ Setup completo!") & \
-    wait $SERVER_PID
+# Criar script de inicialização inline
+RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'php -S 0.0.0.0:${PORT:-10000} -t public &' >> /start.sh && \
+    echo 'sleep 3' >> /start.sh && \
+    echo 'for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do' >> /start.sh && \
+    echo '  php artisan migrate --force 2>&1 && break' >> /start.sh && \
+    echo '  sleep 3' >> /start.sh && \
+    echo 'done' >> /start.sh && \
+    echo 'php artisan db:seed --class=PermissionsSeeder --force 2>&1 || true' >> /start.sh && \
+    echo 'wait' >> /start.sh && \
+    chmod +x /start.sh
+
+# Executar script
+CMD ["/start.sh"]
 
