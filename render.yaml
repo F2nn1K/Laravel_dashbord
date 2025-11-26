@@ -30,7 +30,7 @@ services:
       - key: LOG_LEVEL
         value: error
       - key: DB_CONNECTION
-        value: mysql
+        value: pgsql
       - key: DB_HOST
         fromDatabase:
           name: marudi-mountain-db
@@ -62,11 +62,10 @@ services:
       - key: BCRYPT_ROUNDS
         value: 12
 
-  # MySQL Database
+  # PostgreSQL Database (mais estável que MySQL no Free)
 databases:
   - name: marudi-mountain-db
     databaseName: marudimountain
     user: marudiuser
     plan: free
-    region: oregon
 

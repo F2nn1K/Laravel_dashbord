@@ -43,6 +43,6 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 # Expor porta
 EXPOSE 10000
 
-# Inicialização MINIMALISTA - apenas servidor
-CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
+# Usar variável PORT do Render ou 10000 como fallback
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
 
