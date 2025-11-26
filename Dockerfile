@@ -43,14 +43,18 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 # Expor porta
 EXPOSE 10000
 
-# Comando de inicialização - versão simplificada e robusta
-CMD echo "🚀 Iniciando Marudi Mountain System..." && \
-    echo "⏳ Aguardando MySQL..." && \
-    sleep 10 && \
-    php artisan migrate --force 2>&1 | head -20 && \
-    php artisan db:seed --class=PermissionsSeeder --force 2>&1 | head -10 || true && \
-    php artisan config:cache && \
-    echo "✅ Setup completo!" && \
-    echo "🌐 Servidor iniciando na porta ${PORT:-10000}..." && \
-    php -S 0.0.0.0:${PORT:-10000} -t public public/index.php
+# Comando de inicialização - SERVIDOR PRIMEIRO, migrations em background
+CMD (echo "🚀 Iniciando servidor na porta ${PORT:-10000}..." && \
+    php -S 0.0.0.0:${PORT:-10000} -t public public/index.php) & \
+    SERVER_PID=$! && \
+    echo "✅ Servidor iniciado! PID: $SERVER_PID" && \
+    sleep 5 && \
+    echo "📦 Executando migrations em background..." && \
+    (for i in 1 2 3 4 5 6 7 8 9 10; do \
+        php artisan migrate --force 2>&1 && break || sleep 5; \
+    done && \
+    php artisan db:seed --class=PermissionsSeeder --force 2>&1 || true && \
+    php artisan config:cache 2>&1 && \
+    echo "✅ Setup completo!") & \
+    wait $SERVER_PID
 
