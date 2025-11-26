@@ -10,8 +10,11 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libpq-dev \
     curl \
+    netcat-openbsd \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip gd
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip gd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Instalar Node.js e npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -37,23 +40,17 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p storage/logs \
     && chmod -R 775 storage bootstrap/cache
 
-# Expor porta (Render usa variável PORT)
+# Expor porta
 EXPOSE 10000
 
-# Comando de inicialização com retry para aguardar MySQL
-CMD set -e; \
-    echo "Aguardando MySQL ficar disponível..."; \
-    for i in 1 2 3 4 5 6 7 8 9 10; do \
-        if php artisan migrate --force 2>/dev/null; then \
-            echo "✅ Migrations executadas com sucesso!"; \
-            break; \
-        else \
-            echo "⏳ Tentativa $i/10 - MySQL ainda não disponível, aguardando 5s..."; \
-            sleep 5; \
-        fi; \
-    done; \
-    php artisan db:seed --class=PermissionsSeeder --force || true; \
-    php artisan config:cache; \
-    echo "🚀 Iniciando servidor na porta ${PORT:-10000}..."; \
-    php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# Comando de inicialização - versão simplificada e robusta
+CMD echo "🚀 Iniciando Marudi Mountain System..." && \
+    echo "⏳ Aguardando MySQL..." && \
+    sleep 10 && \
+    php artisan migrate --force 2>&1 | head -20 && \
+    php artisan db:seed --class=PermissionsSeeder --force 2>&1 | head -10 || true && \
+    php artisan config:cache && \
+    echo "✅ Setup completo!" && \
+    echo "🌐 Servidor iniciando na porta ${PORT:-10000}..." && \
+    php -S 0.0.0.0:${PORT:-10000} -t public public/index.php
 
