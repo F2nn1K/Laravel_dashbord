@@ -71,33 +71,33 @@ try {
         echo "🔑 Senha: admin123\n";
     } else {
         echo "⚠️ Status: $status\n\n";
+        
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        echo "📄 CONTEÚDO COMPLETO DA RESPOSTA:\n";
+        echo "📄 CONTEÚDO COMPLETO DO ERRO:\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
         
         $content = $response->getContent();
-        
-        // Mostrar TODO o conteúdo
         echo htmlspecialchars($content);
         
         echo "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        echo "📋 ANÁLISE DO ERRO\n";
+        echo "🔍 ANÁLISE AUTOMÁTICA:\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
         
         // Procurar por erros específicos
-        if (strpos($content, 'Vite') !== false || strpos($content, 'manifest') !== false) {
+        if (stripos($content, 'vite') !== false || stripos($content, 'manifest') !== false) {
             echo "❌ PROBLEMA: Assets do Vite (CSS/JS)\n\n";
-            echo "O que fazer:\n";
-            echo "1. Verificar se public/build/manifest.json existe\n";
-            echo "2. Verificar se public/build/assets/ tem arquivos\n";
-        } else if (strpos($content, 'Class') !== false && strpos($content, 'not found') !== false) {
+            echo "CAUSA: public/build/manifest.json ou assets não encontrados\n\n";
+            echo "SOLUÇÃO: O build já foi feito. Pode ser problema de caminho.\n";
+        } else if (stripos($content, 'APP_KEY') !== false) {
+            echo "❌ PROBLEMA: APP_KEY\n\n";
+        } else if (stripos($content, 'Class') !== false && stripos($content, 'not found') !== false) {
             echo "❌ PROBLEMA: Classe PHP não encontrada\n\n";
-            echo "Solução: Rodar composer dump-autoload\n";
-        } else if (strpos($content, 'View') !== false && strpos($content, 'not found') !== false) {
-            echo "❌ PROBLEMA: View Blade não encontrada\n\n";
+            echo "SOLUÇÃO: Problema de autoload\n";
+        } else if (stripos($content, 'View') !== false && stripos($content, 'not found') !== false) {
+            echo "❌ PROBLEMA: View não encontrada\n\n";
+            echo "View faltando. Verificar resources/views/\n";
         } else {
-            echo "⚠️ Erro não identificado automaticamente\n";
-            echo "Veja o conteúdo acima para mais detalhes\n";
+            echo "⚠️ Erro desconhecido. Veja o conteúdo acima.\n";
         }
     }
     
