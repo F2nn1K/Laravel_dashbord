@@ -37,13 +37,23 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p storage/logs \
     && chmod -R 775 storage bootstrap/cache
 
-# Expor porta
-EXPOSE 8080
+# Expor porta (Render usa variável PORT)
+EXPOSE 10000
 
-# Comando de inicialização
-CMD php artisan migrate --force && \
-    php artisan db:seed --class=AdminUserSeeder --force && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+# Comando de inicialização com retry para aguardar MySQL
+CMD set -e; \
+    echo "Aguardando MySQL ficar disponível..."; \
+    for i in 1 2 3 4 5 6 7 8 9 10; do \
+        if php artisan migrate --force 2>/dev/null; then \
+            echo "✅ Migrations executadas com sucesso!"; \
+            break; \
+        else \
+            echo "⏳ Tentativa $i/10 - MySQL ainda não disponível, aguardando 5s..."; \
+            sleep 5; \
+        fi; \
+    done; \
+    php artisan db:seed --class=PermissionsSeeder --force || true; \
+    php artisan config:cache; \
+    echo "🚀 Iniciando servidor na porta ${PORT:-10000}..."; \
+    php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
 
