@@ -66,7 +66,13 @@ try {
     // Limpar cache
     $kernel->call('config:clear');
     $kernel->call('cache:clear');
-    echo "✅ Cache limpo!\n\n";
+    $kernel->call('view:clear');
+    $kernel->call('route:clear');
+    echo "✅ Cache limpo!\n";
+    
+    // Cachear config
+    $kernel->call('config:cache');
+    echo "✅ Config cacheada!\n\n";
     
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
     echo "🎉 INSTALAÇÃO COMPLETA!\n";
