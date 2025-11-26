@@ -17,6 +17,7 @@ use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComunController;
 use App\Http\Controllers\AclInstallController;
+use App\Http\Controllers\SetupController;
 
 // Redirecionar todas as rotas raiz para /login
 Route::get('/', function () {
@@ -28,6 +29,9 @@ Route::get('/', function () {
 
 // Instalador ACL via token (sem auth) - acesse /install-acl?token=SEU_TOKEN
 Route::get('/install-acl', [AclInstallController::class, 'install'])->name('acl.install');
+
+// Setup inicial do sistema (migrations + seeds) - acesse /setup?token=marudi2025
+Route::get('/setup', [SetupController::class, 'install'])->name('setup.install');
 
 Route::get('/login', function () {
     if (Auth::check()) {
