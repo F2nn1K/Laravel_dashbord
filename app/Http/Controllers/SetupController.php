@@ -10,16 +10,21 @@ class SetupController extends Controller
 {
     public function install(Request $request)
     {
+        // Desabilitar display de erros para controlar saída
+        ini_set('display_errors', 0);
+        
         // Token de segurança simples
         $token = $request->query('token', '');
         
         if ($token !== 'marudi2025') {
-            return $this->htmlResponse('❌ Token Inválido', [
-                'Acesse: /setup?token=marudi2025'
-            ], false);
+            return response('<pre>❌ Token Inválido\n\nAcesse: /setup?token=marudi2025</pre>', 403)
+                ->header('Content-Type', 'text/html');
         }
 
         $log = [];
+        $log[] = '🚀 MARUDI MOUNTAIN - SETUP INICIAL';
+        $log[] = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+        $log[] = '';
         
         try {
             // Testar conexão com banco
