@@ -20,10 +20,6 @@ try {
     require __DIR__ . '/../vendor/autoload.php';
     $app = require_once __DIR__ . '/../bootstrap/app.php';
     
-    // Forçar debug mode
-    $app['config']['app.debug'] = true;
-    $app['config']['app.env'] = 'local';
-    
     $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
     $request = Illuminate\Http\Request::create('/login', 'GET');
     
