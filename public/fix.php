@@ -41,12 +41,7 @@ try {
         }
     }
     
-    echo "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    echo "📦 RECACHEANDO CONFIG\n";
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-    
-    $kernel->call('config:cache');
-    echo "✅ Config cacheada!\n\n";
+    echo "\n✅ Todos os caches limpos!\n\n";
     
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
     echo "🔍 TESTANDO /login\n";

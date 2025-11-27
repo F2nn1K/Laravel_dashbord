@@ -63,16 +63,11 @@ try {
     echo $output2->fetch();
     echo "\n✅ Permissões criadas!\n\n";
     
-    // Limpar cache
+    // Limpar cache (SEM cachear depois - causa problemas no Render)
     $kernel->call('config:clear');
     $kernel->call('cache:clear');
     $kernel->call('view:clear');
-    $kernel->call('route:clear');
-    echo "✅ Cache limpo!\n";
-    
-    // Cachear config
-    $kernel->call('config:cache');
-    echo "✅ Config cacheada!\n\n";
+    echo "✅ Cache limpo!\n\n";
     
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
     echo "🎉 INSTALAÇÃO COMPLETA!\n";
