@@ -25,7 +25,11 @@ try {
     echo "🔍 CONECTANDO AO BANCO\n";
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
     
-    $pdo = $app->make('db')->connection()->getPdo();
+    // Forçar boot do framework
+    $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+    
+    // Conectar ao banco
+    $pdo = \Illuminate\Support\Facades\DB::connection()->getPdo();
     echo "✅ Conectado ao PostgreSQL!\n\n";
     
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
